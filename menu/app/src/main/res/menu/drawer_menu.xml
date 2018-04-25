@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_contacts"
+            android:icon="@drawable/ic_contacts"
+            android:title="Crédit des contactes" />
+        <item
+            android:id="@+id/nav_transfer"
+            android:icon="@drawable/ic_transfer"
+            android:title="Envoyer du crédit" />
+        <item
+            android:id="@+id/nav_data"
+            android:icon="@drawable/ic_consommateurs"
+            android:title="Données utilisateur" />
+        <item
+            android:id="@+id/nav_send"
+            android:icon="@drawable/ic_send"
+            android:title="Upload Données" />
+    </group>
+
+    <item android:title="Communication">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_contact_phone"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_up"
+                android:icon="@drawable/ic_contact_phone"
+                android:title="Up" />
+        </menu>
+    </item>
+
+</menu>
