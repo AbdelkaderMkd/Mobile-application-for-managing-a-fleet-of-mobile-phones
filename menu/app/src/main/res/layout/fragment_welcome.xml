@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/welcome_title"
-            android:text="Ceci est notre application de projet de fin d'etude, elle vous permet de gérer le crédit des groupes de vos contactes avec plein d'option et la possibilité de transferer directement du crédit téléphonique. On vous suggère de commencer par aller à la section données d'utilisateur pour entrée vos données et de bénéficier de l'étendu des fonctionnalités. Enjoy!"
+            android:text="Ceci est notre application de projet de fin d'etude, elle vous permet de gérer le crédit des groupes de vos contactes avec plein d'option et la possibilité de transferer directement du crédit téléphonique. On vous suggère de commencer par aller à la section données d'utilisateur pour entrée vos données pour bénéficier de l'étendu des fonctionnalités. Enjoy!"
             android:textColor="#ddd"
             android:textSize="18sp" />
 

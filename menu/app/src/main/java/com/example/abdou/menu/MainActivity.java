@@ -51,17 +51,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     NavigationView navigationView;
 
-    public RelativeLayout RL1,RL2,RL3,RL4;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RL1=findViewById(R.id.goto_1);
-        RL2=findViewById(R.id.goto_2);
-        RL3=findViewById(R.id.goto_3);
-        RL4=findViewById(R.id.goto_4);
 
         /////////////////////////////////Initialisation du menu latérale gauche//////////////////////////////
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -87,54 +81,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS);
 
         } else {
-            /*
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ContactsFragment()).commit();
-                navigationView.setCheckedItem(R.id.nav_contacts);
+                        new HomeFragment()).commit();
+                navigationView.setCheckedItem(R.id.nav_home);
             }
-            */
         }
-
-
-        ////////////////////////Button de l'accueil/////////////////////////////
-        RL1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ContactsFragment()).commit();
-
-            }
-        });
-
-        RL2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TransferFragment()).commit();
-
-            }
-        });
-
-        RL3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DataFragment()).commit();
-
-            }
-        });
-
-        RL4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SendFragment()).commit();
-
-            }
-        });
 
 
 
     }
-
-
 
 
     /////////////////////////////////Gestion du menu latérale gauche//////////////////////////////
@@ -144,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
 
             case R.id.nav_home:
-                home();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
                 break;
 
             case R.id.nav_contacts:
@@ -198,18 +154,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new WelcomeFragment()).commit();
 
     }
-
-    //ferme tous les fragments
-    public void home() {
-        int size = navigationView.getMenu().size();
-        for (int i = 0; i < size; i++) {
-            navigationView.getMenu().getItem(i).setChecked(false);
-        }
-        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-        }
-    }
-
 
     //utilisation du ussd pour consulter le crédit
     private void dailNumber(String code) {
