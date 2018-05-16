@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#FFFFFF">
 
     <RelativeLayout
         android:id="@+id/welcome_message_layout"
@@ -37,9 +38,10 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/welcome_messgae"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp"
+            android:layout_marginTop="10dp"
             android:src="@mipmap/ic_launcher_logo_univ_round" />
 
     </RelativeLayout>

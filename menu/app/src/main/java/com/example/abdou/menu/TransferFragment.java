@@ -2,7 +2,9 @@ package com.example.abdou.menu;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -34,9 +36,12 @@ public class TransferFragment extends Fragment {
     private ArrayList <Groupes> mGroupe = new ArrayList <>();
     private Groupes_Adapter mGroupeAdapter;
     private Spinner spinnerGroupes, spinnerContactes;
-    private EditText mTNumber, codePIN;
+    private EditText ETmontTran, ETcdPIN;
     private Button BT;
-    private String NumberP;
+    private String numPhoneSelected;
+
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String NUMBER = "number";
 
     @Nullable
     @Override
@@ -56,8 +61,8 @@ public class TransferFragment extends Fragment {
 
 
         //déclaration
-        mTNumber = view.findViewById(R.id.edit_text_number);
-        codePIN = view.findViewById(R.id.edit_text_code);
+        ETmontTran = view.findViewById(R.id.edit_text_number);
+        ETcdPIN = view.findViewById(R.id.edit_text_code);
         BT = view.findViewById(R.id.tr_btn);
 
         //déclaration du spinner vide des groupes
@@ -101,7 +106,7 @@ public class TransferFragment extends Fragment {
             public void onItemSelected(AdapterView <?> parent, View view, int position, long id) {
                 Contactes clickedItem = (Contactes) parent.getItemAtPosition(position);
 
-                NumberP = clickedItem.getNumber().replaceAll(" ", "");
+                numPhoneSelected = clickedItem.getNumber().replaceAll(" ", "");
                 Toast.makeText(getContext(), clickedItem.getName() + " : " + clickedItem.getNumber(), Toast.LENGTH_SHORT).show();
 
 
@@ -116,7 +121,7 @@ public class TransferFragment extends Fragment {
         //////////Gestion du button pour envoyer du crédit
         BT.setEnabled(false);
 
-        mTNumber.addTextChangedListener(new TextWatcher() {
+        ETmontTran.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -149,38 +154,54 @@ public class TransferFragment extends Fragment {
 
     //Envoyer du crédit
     private void transCall() {
-        String numberT = mTNumber.getText().toString();
-        String codeP = codePIN.getText().toString();
-        if (codeP.isEmpty()) codeP = "0000";
-        if (NumberP.regionMatches(0, "+213", 0, 4)) {
-            NumberP = NumberP.replace("+213", "0");
+        String montantTran = ETmontTran.getText().toString();
+        String codePin = ETcdPIN.getText().toString();
+
+        //si le numéro n'est pas bien écrit
+        if (numPhoneSelected.regionMatches(0, "+213", 0, 4)) {
+            numPhoneSelected = numPhoneSelected.replace("+213", "0");
         }
-        if (numberT.trim().length() > 0) {
+
+        if (montantTran.trim().length() > 0) {
 
             if (ContextCompat.checkSelfPermission(getContext(),
                     android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{android.Manifest.permission.CALL_PHONE}, REQUEST_CALL);
             } else {
+                String dial = null;
+                SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+                String str = sharedPreferences.getString(NUMBER, "");
 
-                if (NumberP.regionMatches(0, "06", 0, 2)) {
-                    String dial = "tel:" + "*610*1*" + NumberP + "*" + numberT + "*" + codeP + Uri.encode("#");
-                    startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
-                    Toast.makeText(getContext(), "MOBILIS, code PIN: " + codeP, Toast.LENGTH_SHORT).show();
-                } else {
-                    if (NumberP.regionMatches(0, "05", 0, 2)) {
-                        String dial = "tel:" + "*115*" + NumberP + "*" + numberT + Uri.encode("#");
+                String strOut = str.substring(0, 2);
+                switch (strOut) {
+                    case "07":
+                        if (codePin.isEmpty()) codePin = "00000";
+                        dial = "tel:" + "*770*" + numPhoneSelected + "*" + montantTran + "*" + codePin + Uri.encode("#");
+                        startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+                        Toast.makeText(getContext(), "DJEZZY, code PIN: " + codePin, Toast.LENGTH_SHORT).show();
+                        ETcdPIN.setText("");
+                        codePin = null;
+                        break;
+
+                    case "05":
+                        dial = "tel:" + "*115*" + numPhoneSelected + "*" + montantTran + Uri.encode("#");
                         startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
                         Toast.makeText(getContext(), "OOREDOO", Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (NumberP.regionMatches(0, "07", 0, 2)) {
-                            String dial = "tel:" + "*760*" + NumberP + "*" + numberT + "*0000" + Uri.encode("#");
-                            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
-                            Toast.makeText(getContext(), "DJEZZY", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getContext(), "Sélectionner un bon numero de téléphone", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                        break;
+
+                    case "06":
+                        if (codePin.isEmpty()) codePin = "0000";
+                        dial = "tel:" + "*610*1*" + numPhoneSelected + "*" + montantTran + "*" + codePin + Uri.encode("#");
+                        startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+                        Toast.makeText(getContext(), "MOBILIS, code PIN: " + codePin, Toast.LENGTH_SHORT).show();
+                        ETcdPIN.setText("");
+                        codePin = null;
+                        break;
+
+                    default:
+                        Toast.makeText(getContext(), "Veuillez vérifier votre numéro de téléphone ou sélectionner un bon numero.", Toast.LENGTH_SHORT).show();
+                        break;
                 }
 
             }

@@ -2,29 +2,59 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical">
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
+        <!-- Titre -->
+        <TextView
+            android:id="@+id/titre_du"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Données Utilisateur:"
+            android:textColor="@color/Blackv"
+            android:textSize="18dp"
+            android:textStyle="bold" />
 
         <!-- name -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="-10dp"
+            android:layout_marginTop="3dp"
+            android:text=" (local)"
+            android:textColor="@color/Greenv"
+            android:textSize="12dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
+
+        <!-- name -->
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
             android:padding="10dp"
             android:text="Nom:"
-            android:textSize="15dp" />
+            android:textSize="12dp" />
 
         <!-- name input -->
         <EditText
             android:id="@+id/name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="30dp" />
+            android:ems="8"
+            android:textSize="15dp" />
 
     </LinearLayout>
 
@@ -32,78 +62,117 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
         <!-- number -->
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="-10dp"
             android:padding="10dp"
             android:text="Numéro de téléphone:"
-            android:textSize="15dp" />
+            android:textSize="12dp" />
 
         <!-- number input -->
         <EditText
             android:id="@+id/number"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="8"
+            android:inputType="phone"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
+
+        <!-- credit -->
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Crédit:"
+            android:textSize="12dp" />
+
+        <!-- credit input -->
+        <EditText
+            android:id="@+id/crédit"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="30dp"
-            android:ems="10"
-            android:inputType="phone" />
+            android:ems="3"
+            android:inputType="phone"
+            android:textSize="15dp" />
 
     </LinearLayout>
 
 
-    <!-- number -->
+    <!-- number permission -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:padding="10dp"
         android:text="Liste des numéros autorisé à voire votre crédit:"
-        android:textSize="15dp" />
+        android:textSize="12dp" />
 
-
+    <!-- number permission list -->
     <ListView
         android:id="@+id/lview"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_height="140dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="10dp">
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
 
-    </ListView>
 
-    <!-- number input -->
+    <!-- number permission input -->
     <EditText
         android:id="@+id/permission_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:ems="10"
-        android:inputType="phone" />
+        android:inputType="phone"
+        android:textSize="15dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="84dp"
-            android:text="Ajouter" />
+            android:layout_marginRight="10dp"
+            android:background="@color/Greyv"
+            android:minHeight="40dp"
+            android:minWidth="100dp"
+            android:text="Ajouter"
+            android:textColor="@color/Greenv"
+            android:textSize="12dp" />
 
         <Button
             android:id="@+id/btn_remove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="Supprimer" />
+            android:background="@color/Greyv"
+            android:minHeight="40dp"
+            android:minWidth="100dp"
+            android:text="Supprimer"
+            android:textColor="@color/Redv"
+            android:textSize="12dp" />
 
     </LinearLayout>
 
@@ -114,8 +183,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:paddingHorizontal="50dp"
-        android:text="Sauvegarder" />
+        android:background="@color/Greyv"
+        android:minHeight="50dp"
+        android:minWidth="140dp"
+        android:text="Sauvegarder"
+        android:textColor="#FFFFFF"
+        android:textSize="14dp" />
 
 
 </LinearLayout>

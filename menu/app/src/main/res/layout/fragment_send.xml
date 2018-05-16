@@ -2,28 +2,59 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical">
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <!-- name -->
+
+        <!-- Titre -->
+        <TextView
+            android:id="@+id/titre_du"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Données Utilisateur:"
+            android:textColor="@color/Blackv"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="-10dp"
+            android:layout_marginTop="4dp"
+            android:text=" (cloud)"
+            android:textColor="@color/Greenv"
+            android:textSize="12dp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <!-- name -->
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
             android:padding="10dp"
             android:text="Nom:"
-            android:textSize="15dp" />
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/sname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:text="nom"
+            android:textColor="@color/Blackv"
             android:textSize="15dp" />
 
     </LinearLayout>
@@ -32,22 +63,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
+
         <!-- number -->
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="-10dp"
             android:padding="10dp"
             android:text="Numéro:"
-            android:textSize="15dp" />
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/snumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:text="numéro"
+            android:textColor="@color/Blackv"
             android:textSize="15dp" />
 
     </LinearLayout>
@@ -56,25 +89,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
         <!-- crédit -->
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="-5dp"
             android:padding="10dp"
             android:text="Crédit:"
-            android:textSize="15dp" />
+            android:textSize="12dp" />
 
-        <!-- crédit input -->
-        <EditText
-            android:id="@+id/co_crd"
+        <TextView
+            android:id="@+id/scredit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
-            android:ems="4"
-            android:inputType="phone" />
+            android:text="crédit"
+            android:textColor="@color/Blackv"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="Da"
+            android:textColor="@color/Blackv"
+            android:textSize="15dp" />
 
     </LinearLayout>
 
@@ -82,29 +123,57 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:padding="10dp"
         android:text="Liste des numéros autorisé à voire votre crédit:"
-        android:textSize="15dp" />
+        android:textSize="12dp" />
+
 
     <ListView
         android:id="@+id/slist"
         android:layout_width="wrap_content"
-        android:layout_height="230dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="10dp">
+        android:layout_height="200dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
     </ListView>
 
-    <!-- Button Send -->
-    <Button
-        android:id="@+id/co_btn"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:paddingHorizontal="50dp"
-        android:text="Mise a jour" />
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+
+        android:orientation="horizontal">
+
+        <!-- Button Send -->
+        <Button
+            android:id="@+id/co_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:background="@color/Greyv"
+            android:paddingHorizontal="15dp"
+            android:text="Mise a jour"
+            android:textColor="@color/Greenv"
+            android:textSize="14dp" />
+
+        <!-- Button delet  -->
+        <Button
+            android:id="@+id/fb_data_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/Greyv"
+            android:paddingHorizontal="15dp"
+            android:text="supprimer"
+            android:textColor="@color/Redv"
+            android:textSize="14dp" />
+
+    </LinearLayout>
 
 
 </LinearLayout>

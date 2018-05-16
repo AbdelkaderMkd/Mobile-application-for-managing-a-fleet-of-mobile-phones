@@ -7,5 +7,7 @@
     <color name="Greyv">#151515</color>
     <color name="Blackv">#000000</color>
     <color name="Greenv">#108e10</color>
+    <color name="Redv">#8e1010</color>
+    <color name="Whitev">#FFFFFF</color>
 
 </resources>

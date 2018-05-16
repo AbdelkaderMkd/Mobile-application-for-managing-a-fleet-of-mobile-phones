@@ -3,10 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
+
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Accueil" />
+        <item
             android:id="@+id/nav_contacts"
-            android:icon="@drawable/ic_contacts"
+            android:icon="@drawable/ic_consommateurs"
             android:title="Crédit des contactes" />
         <item
             android:id="@+id/nav_transfer"
@@ -14,25 +19,27 @@
             android:title="Envoyer du crédit" />
         <item
             android:id="@+id/nav_data"
-            android:icon="@drawable/ic_consommateurs"
-            android:title="Données utilisateur" />
+            android:icon="@drawable/ic_account_box_black_24dp"
+            android:title="Données d'utilisateur" />
         <item
             android:id="@+id/nav_send"
-            android:icon="@drawable/ic_send"
-            android:title="Upload Données" />
+            android:icon="@drawable/ic_cloud_black_24dp"
+            android:title="Données en ligne" />
     </group>
 
-    <item android:title="Communication">
+
+    <item android:title="Option">
         <menu>
             <item
                 android:id="@+id/nav_share"
-                android:icon="@drawable/ic_contact_phone"
-                android:title="Share" />
+                android:icon="@drawable/ic_send"
+                android:title="Consulter le Crédit" />
             <item
                 android:id="@+id/nav_up"
-                android:icon="@drawable/ic_contact_phone"
-                android:title="Up" />
+                android:icon="@drawable/ic_tag_faces_black_24dp"
+                android:title="Bienvenu !" />
         </menu>
     </item>
+
 
 </menu>

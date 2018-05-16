@@ -44,7 +44,7 @@ public class ConsommateurAdapter extends ArrayAdapter <Consommateur> {
         TextView consommateurCrd = consommateurView.findViewById(R.id.CoCrd);
         consommateurCrd.setTextSize(TypedValue.COMPLEX_UNIT_PX, 50);
         consommateurNom.setText(consommateur.getNom());
-        consommateurCrd.setText(consommateur.getCrd());
+        consommateurCrd.setText(consommateur.getCrédit());
         return consommateurView;
     }
 

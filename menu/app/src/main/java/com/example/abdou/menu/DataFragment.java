@@ -26,13 +26,14 @@ import java.util.List;
 
 public class DataFragment extends Fragment {
 
-    private EditText ET1, ET2, ET3;
+    private EditText ET1, ET2, ET3, ET4;
     private Button B, A, BR;
     private ListView L;
 
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String NAME = "name";
     public static final String NUMBER = "number";
+    public static final String BALANCE = "balance";
     public static final String PERMISSION = "permission";
 
     private List <String> list = new ArrayList <String>();
@@ -47,13 +48,14 @@ public class DataFragment extends Fragment {
         ET1 = view.findViewById(R.id.name);
         ET2 = view.findViewById(R.id.number);
         ET3 = view.findViewById(R.id.permission_number);
+        ET4 = view.findViewById(R.id.crédit);
         A = view.findViewById(R.id.btn_add);
         B = view.findViewById(R.id.btn);
         BR = view.findViewById(R.id.btn_remove);
         L = view.findViewById(R.id.lview);
 
         //intitialisation liste
-        adapter = new NumberPer_Adapter(getContext(), (ArrayList <String>) list);
+        adapter = new NumberPer_Adapter(getContext(), R.layout.groupes, (ArrayList <String>) list);
         L.setAdapter(adapter);
 
 
@@ -61,22 +63,6 @@ public class DataFragment extends Fragment {
         BR.setEnabled(false);
         A.setEnabled(false);
 
-        ET2.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                B.setEnabled((s.toString().length() != 0) && (ET1.getText().toString()!=null));
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
         ET3.addTextChangedListener(new TextWatcher() {
             @Override
@@ -126,9 +112,13 @@ public class DataFragment extends Fragment {
         B.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                save();
-                load();
-
+                if ((ET1.getText().toString().length() != 0) && (ET2.getText().toString().length() != 0) && (ET4.getText().toString().length() != 0)) {
+                    save();
+                    load();
+                    Toast.makeText(getContext(), "Données sauvegardées avec succès !", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Un des champs est vide veuillez le remplir SVP !", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -170,6 +160,7 @@ public class DataFragment extends Fragment {
 
         editor.putString(NAME, ET1.getText().toString());
         editor.putString(NUMBER, ET2.getText().toString().replaceAll(" ", ""));
+        editor.putString(BALANCE, ET4.getText().toString());
 
         Gson gson = new Gson();
         String json = gson.toJson(list.toArray());
@@ -186,6 +177,7 @@ public class DataFragment extends Fragment {
 
         ET1.setText(sharedPreferences.getString(NAME, ""));
         ET2.setText(sharedPreferences.getString(NUMBER, ""));
+        ET4.setText(sharedPreferences.getString(BALANCE, ""));
 
 
         Gson gson = new Gson();
@@ -194,13 +186,12 @@ public class DataFragment extends Fragment {
         }.getType();
         if (json != null) {
             list = gson.fromJson(json, type);
-            adapter = new NumberPer_Adapter(getContext(), (ArrayList <String>) list);
+            adapter = new NumberPer_Adapter(getContext(), R.layout.groupes, (ArrayList <String>) list);
             L.setAdapter(adapter);
 
         } else {
             Toast.makeText(getContext(), "veuillez entrer vos données personnelles et les sauvegarder ", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     //check List of number permission is empty or not

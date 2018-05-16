@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,16 +23,25 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -49,21 +59,13 @@ public class ContactsFragment extends Fragment {
     private ListView L;
     private Spinner spinnerGroupes, spinnerContactes;
 
+    public SharedPreferences sharedPreferences;
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String NUMBER = "number";
 
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-    //pour firebase (données temporaires pour le traitement)//////////////////////////////A REVOIR//////////////////////////////////////////
-    private List <String> listPer = new ArrayList();
-    private String test_nom = "nom";
-    private String test_crd = "00da";
-
-    //pour firebase (données locales)
-    private String[] txt_nom = new String[100];
-    private String[] txt_crd = new String[100];
-    private String[] jsonp = new String[100];
-    private List[] listPerGOD = new ArrayList[100];
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference consommateurRef = db.collection("Utilisateur");
+    private static final String TAG = "DataActivity";
 
 
     @Nullable
@@ -71,6 +73,9 @@ public class ContactsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
+
+        sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+
         BR = view.findViewById(R.id.ma_btnr);
         L = view.findViewById(R.id.ma_CoList);
 
@@ -81,11 +86,12 @@ public class ContactsFragment extends Fragment {
         L.setAdapter(adapter);
 
 
-        /////////////////////////////// Button send /////////////////////////////////
+        /////////////////////////////// Button send //////////////////////////////////
         BR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initCo();
+                loadData();
+
             }
         });
 
@@ -105,6 +111,7 @@ public class ContactsFragment extends Fragment {
         spinnerGroupes = view.findViewById(R.id.spinner2);
         mGroupeAdapter = new Groupes_Adapter(getContext(), mGroupe);
         spinnerGroupes.setAdapter(mGroupeAdapter);
+
 
         //déclaration du spinner vide des contactes
         spinnerContactes = view.findViewById(R.id.spinner1);
@@ -140,11 +147,7 @@ public class ContactsFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView <?> parent, View view, int position, long id) {
                 Contactes clickedItem = (Contactes) parent.getItemAtPosition(position);
-
                 Toast.makeText(getContext(), clickedItem.getName() + " : " + clickedItem.getNumber(), Toast.LENGTH_SHORT).show();
-
-                /////////////init FB/////////
-                initFB();
 
             }
 
@@ -159,7 +162,7 @@ public class ContactsFragment extends Fragment {
     }
 
 
-    //////////////////////////////////////////////////////////////////////LES METHODES/////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////LES METHODES////////////////////////////////////////////////////////////////////////////////
 
 
     //récupére les id des contactes d'un groupe
@@ -299,127 +302,46 @@ public class ContactsFragment extends Fragment {
     }
 
 
-    //////////////////////////////// remplire la liste avec les consommateurs////////////////////////////
-    public void initCo() {
-
-        int x = 0;
+    /////////////////////////////récupération des données depuis FireStore//////////////////////////////////
+    public void loadData() {
         consommateurs = new ArrayList <Consommateur>();
-
-        for (int i = 0; i < mContactes.size(); i++) {
-
-            consommateurs.add(traitementCo(x));
-            x++;
-        }
-
-        adapter = new ConsommateurAdapter(getContext(),
-                R.layout.consommateurlist, consommateurs);
+        adapter = new ConsommateurAdapter(getContext(), R.layout.consommateurlist, consommateurs);
         L.setAdapter(adapter);
-    }
-
-
-    ////Traitement des données pour un consommateur et le remplir
-    public Consommateur traitementCo(final int x) {
-
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        String yourNP = sharedPreferences.getString(NUMBER, "");
-        List <String> wait = listPerGOD[x];
-        if (wait != null) {
-
-            for (int w = 0; w < wait.size(); w++) {
-
-                String NP = wait.get(w);
-                if (NP.equals(yourNP)) {
-
-                    return new Consommateur(txt_nom[x], txt_crd[x] + "da");
-                }
-            }
-
-        }
-        return new Consommateur("name", "0da");
-
-    }
-
-
-    //////////////////////////////// récupération des consommateurs depuis Firebase ////////////////////////////
-    public void initFB() {
-
-        int x = 0;
         for (int i = 0; i < mContactes.size(); i++) {
+            consommateurRef.whereEqualTo("numéro", mContactes.get(i).getNumber().replaceAll(" ", ""))
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener <QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-            FireBUPDATE(mContactes.get(i), x);
-            x++;
+                            boolean checkedP = false;
+                            for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+
+                                Consommateur consommateur = documentSnapshot.toObject(Consommateur.class);
+
+                                String json = consommateur.getListPermission();
+
+                                if (json.indexOf(sharedPreferences.getString(NUMBER, "")) >= 0) {
+                                    consommateurs.add(consommateur);
+                                    checkedP = true;
+                                } else {
+                                    consommateurs.add(new Consommateur("permission refusé", "0"));
+                                    checkedP = true;
+                                }
+                            }
+                            if (checkedP == false) {
+                                consommateurs.add(new Consommateur("utilisateur introuvable", "0"));
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, e.toString());
+                        }
+                    });
         }
-
-    }
-
-
-    //récupération d'un seul consommateur depuis Firebase
-    public void FireBUPDATE(Contactes s, final int x) {
-
-
-        String PNumber = s.getNumber().replaceAll(" ", "");
-        DatabaseReference myRefNom = database.getReference("Consommateur/" + PNumber + "/Nom");
-        DatabaseReference myRefCrd = database.getReference("Consommateur/" + PNumber + "/Crédit");
-        DatabaseReference myRefPerm = database.getReference("Consommateur/" + PNumber + "/Permission Liste");
-
-        // Read from the database Nom
-        myRefNom.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                test_nom = dataSnapshot.getValue(String.class);
-                txt_nom[x] = test_nom;
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-
-            }
-        });
-
-
-        // Read from the database Crédit
-        myRefCrd.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                test_crd = dataSnapshot.getValue(String.class);
-                txt_crd[x] = test_crd;
-            }
-
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-
-            }
-        });
-
-        // Read from the database Crédit
-        myRefPerm.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                Gson gson = new Gson();
-                String json = dataSnapshot.getValue(String.class);
-                jsonp[x] = json;
-                Type type = new TypeToken <ArrayList <String>>() {
-                }.getType();
-                listPer = gson.fromJson(jsonp[x], type);
-                listPerGOD[x] = listPer;
-                //Toast.makeText(getContext(), "json "+ x+ " : " +  jsonp[x], Toast.LENGTH_SHORT).show();
-                //Toast.makeText(getContext(), "jsonp "+ jsonp, Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-
-            }
-        });
-
     }
 
 

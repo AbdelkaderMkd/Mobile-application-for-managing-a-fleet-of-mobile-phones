@@ -2,40 +2,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical">
 
+    <!-- groupe -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Groupe:"
+        android:textSize="15dp" />
 
     <Spinner
         android:id="@+id/spinner2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@android:drawable/btn_dropdown" />
+
+    <!-- Contacte -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Contacte:"
+        android:textSize="15dp" />
 
     <Spinner
         android:id="@+id/spinner1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@android:drawable/btn_dropdown" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="-5dp"
             android:padding="10dp"
             android:text="Montant du transfer:"
-            android:textSize="15dp" />
+            android:textSize="14dp" />
 
         <EditText
             android:id="@+id/edit_text_number"
@@ -49,15 +64,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="-10dp"
             android:padding="10dp"
-            android:text="Code PIN si vous utilisez Mobilis:"
-            android:textSize="15dp" />
+            android:text="Code PIN :"
+            android:textSize="14dp" />
 
         <EditText
             android:id="@+id/edit_text_code"
@@ -65,7 +81,7 @@
             android:layout_height="wrap_content"
             android:ems="3"
             android:inputType="phone"
-            android:maxLength="4" />
+            android:maxLength="5" />
 
     </LinearLayout>
 
@@ -75,8 +91,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="170dp"
-        android:text="Envoyer du crédit" />
+        android:layout_marginTop="150dp"
+        android:background="@color/Greyv"
+        android:minHeight="55dp"
+        android:minWidth="170dp"
+        android:text="Envoyer du crédit"
+        android:textColor="#FFFFFF"
+        android:textSize="14dp" />
 
 
 </LinearLayout>
