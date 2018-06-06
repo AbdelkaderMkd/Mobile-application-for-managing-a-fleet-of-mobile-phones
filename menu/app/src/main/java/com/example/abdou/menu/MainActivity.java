@@ -38,7 +38,8 @@ import java.util.List;
 import static android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS;
 
 /**
- * Created by Abdou on 18/03/2018.
+ * Created by Abdelkader Mokeddem on 18/03/2018.
+ *
  */
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -50,12 +51,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String NUMBER = "number";
 
     NavigationView navigationView;
+    public RelativeLayout RL1,RL2,RL3,RL4,RL5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        RL1=findViewById(R.id.goto_1);
+        RL2=findViewById(R.id.goto_2);
+        RL3=findViewById(R.id.goto_3);
+        RL4=findViewById(R.id.goto_4);
+        RL5=findViewById(R.id.goto_5);
 
         /////////////////////////////////Initialisation du menu latérale gauche//////////////////////////////
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -81,12 +88,59 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS);
 
         } else {
-            if (savedInstanceState == null) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new HomeFragment()).commit();
-                navigationView.setCheckedItem(R.id.nav_home);
-            }
+            navigationView.getMenu().getItem(0).setChecked(true);
         }
+
+
+
+
+        ////////////////////////Button de l'accueil/////////////////////////////
+        RL1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stlayout();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ContactsFragment()).commit();
+                navigationView.getMenu().getItem(1).setChecked(true);
+
+            }
+        });
+
+        RL2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stlayout();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TransferFragment()).commit();
+                navigationView.getMenu().getItem(2).setChecked(true);
+
+            }
+        });
+
+        RL3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stlayout();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DataFragment()).commit();
+                navigationView.getMenu().getItem(3).setChecked(true);
+
+            }
+        });
+
+        RL4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stlayout();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SendFragment()).commit();
+                navigationView.getMenu().getItem(4).setChecked(true);
+
+            }
+        });
+        RL5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                consultationCrédit();
+
+            }
+        });
 
 
 
@@ -100,22 +154,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
 
             case R.id.nav_home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+                home();milayout();
                 break;
 
             case R.id.nav_contacts:
+                stlayout();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ContactsFragment()).commit();
                 break;
 
             case R.id.nav_transfer:
+                stlayout();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TransferFragment()).commit();
                 break;
 
             case R.id.nav_data:
+                stlayout();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DataFragment()).commit();
                 break;
 
             case R.id.nav_send:
+                stlayout();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SendFragment()).commit();
                 break;
 
@@ -124,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_up:
+                stlayout();
                 closeall();
                 break;
 
@@ -134,6 +193,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+
+    //////bloque tous les layout du main
+    public void stlayout(){
+        RL1.setEnabled(false);
+        RL2.setEnabled(false);
+        RL3.setEnabled(false);
+        RL4.setEnabled(false);
+        RL5.setEnabled(false);
+
+    }
+
+    ////active tous les layout du main
+    public void milayout(){
+        RL1.setEnabled(true);
+        RL2.setEnabled(true);
+        RL3.setEnabled(true);
+        RL4.setEnabled(true);
+        RL5.setEnabled(true);
+
+    }
 
     ////fermer le fragment lorsqu'on retourne en arrière
     @Override
@@ -153,6 +232,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new WelcomeFragment()).commit();
 
+    }
+
+    //ferme tous les fragments
+    public void home() {
+        int size = navigationView.getMenu().size();
+        for (int i = 0; i < size; i++) {
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        }
     }
 
     //utilisation du ussd pour consulter le crédit

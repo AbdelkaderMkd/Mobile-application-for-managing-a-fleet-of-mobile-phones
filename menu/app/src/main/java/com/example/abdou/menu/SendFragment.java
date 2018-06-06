@@ -96,7 +96,8 @@ public class SendFragment extends Fragment {
     /////////sauvegarder les données dans firebase
     public void saveConsommateur() {
 
-        Consommateur consommateur = new Consommateur(sharedPreferences.getString(NAME, ""), sharedPreferences.getString(NUMBER, ""), sharedPreferences.getString(BALANCE, ""), sharedPreferences.getString(PERMISSION, null));
+        Consommateur consommateur = new Consommateur(sharedPreferences.getString(NAME, ""), sharedPreferences.getString(NUMBER, ""),
+                sharedPreferences.getString(BALANCE, ""), sharedPreferences.getString(PERMISSION, null));
 
         consRef.set(consommateur)
                 .addOnSuccessListener(new OnSuccessListener <Void>() {
